@@ -380,10 +380,8 @@ def download_thumbnail(session, filename, template_params):
     get_thumb = session.get(template_params["thumbnail_url"] + ".L")
     if get_thumb.status_code == 404:
         get_thumb = session.get(template_params["thumbnail_url"])
-<<<<<<< HEAD
-=======
 
->>>>>>> pr/3
+
     with open(filename, "wb") as file:
         for block in get_thumb.iter_content(BLOCK_SIZE):
             file.write(block)
@@ -718,11 +716,7 @@ def main():
 
         if not account_username:
             account_username = getpass.getpass("Username: ")
-<<<<<<< HEAD
-        if account_password:
-=======
         if not account_password:
->>>>>>> pr/3
             account_password = getpass.getpass("Password: ")
 
         session = login(account_username, account_password)
