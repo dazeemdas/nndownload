@@ -278,7 +278,7 @@ def replace_extension(filename, new_extension):
 
 
 def sanitize_for_path(value, replace=' '):
-    """Remove potentially illegal characters from a path."""
+    """Replace potentially illegal characters from a path."""
     il_text='<>\"?\\/*:'
     hm_text='＜＞˝？＼／＊：'
     for i,j in zip(*[il_text,hm_text]):
@@ -376,10 +376,7 @@ def download_thumbnail(session, filename, template_params):
 
     filename = replace_extension(filename, "jpg")
 
-    # Try to retrieve the large thumbnail
-    get_thumb = session.get(template_params["thumbnail_url"] + ".L")
-    if get_thumb.status_code == 404:
-        get_thumb = session.get(template_params["thumbnail_url"])
+    get_thumb = session.get(template_params["thumbnail_url"])
 
 
     with open(filename, "wb") as file:
@@ -622,7 +619,7 @@ def collect_parameters(session, template_params, params):
         template_params["uploader_id"] = int(params["owner"]["id"]) if params.get("owner") else None
         template_params["ext"] = params["video"]["movieType"]
         template_params["description"] = params["video"]["description"]
-        template_params["thumbnail_url"] = params["video"]["thumbnailURL"]
+        template_params["thumbnail_url"] = params["video"]["largeThumbnailURL"] if params["video"]["largeThumbnailURL"] else params["video"]["thumbnailURL"]
         template_params["thread_id"] = int(params["thread"]["ids"]["default"])
         template_params["published"] = params["video"]["postedDateTime"]
         template_params["duration"] = params["video"]["duration"]
