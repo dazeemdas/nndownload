@@ -319,8 +319,9 @@ def download_video(session, filename, template_params):
     dl_stream.raise_for_status()
     video_len = int(dl_stream.headers["content-length"])
 
-    if cmdl_opts.force_high_quality and video_len == template_params["size_low"]:
-        raise FormatNotAvailableException("High quality source not currently available")
+    if video_len == template_params["size_low"] or template_params["isLowQuality"] == "low":
+        template_params["isLowQuality"] = "low"
+        if cmdl_opts.force_high_quality: raise FormatNotAvailableException("High quality source not currently available")
 
     if os.path.isfile(filename):
         current_byte_pos = os.path.getsize(filename)
@@ -626,6 +627,7 @@ def collect_parameters(session, template_params, params):
         template_params["view_count"] = params["video"]["viewCount"]
         template_params["mylist_count"] = params["video"]["mylistCount"]
         template_params["comment_count"] = params["thread"]["commentCount"]
+        template_params["isLowQuality"] = params["video"]["smileInfo"]["qualityIds"][1]
 
     elif params.get("videoDetail"):
         template_params["id"] = params["videoDetail"]["id"]
@@ -641,6 +643,7 @@ def collect_parameters(session, template_params, params):
         template_params["view_count"] = params["videoDetail"]["viewCount"]
         template_params["mylist_count"] = params["videoDetail"]["mylistCount"]
         template_params["comment_count"] = params["videoDetail"]["commentCount"]
+        template_params["isLowQuality"] = "high"
 
     response = session.get(THUMB_INFO_API.format(template_params["id"]))
     response.raise_for_status()
