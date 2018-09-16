@@ -2,9 +2,10 @@
 nndownload allows you to download videos from [Niconico](http://nicovideo.jp), formerly known as Nico Nico Douga. It simulates the HTML5 player by performing a session request to get the HQ source. Where not available, it will fallback to the Flash player. Keep in mind that if your account doesn't have premium, it may download the LQ source during economy mode hours (12 PM - 2 AM JST).
 
 ## Features
- - Download a video with comments, thumbnail, and metadata
- - Download a mylist
- - Build a RTMP stream URL for official Niconama broadcasts
+ - Download videos with comments, thumbnails, and metadata
+ - Download mylists
+ - Build RTMP stream URLs for official Niconama broadcasts
+ - Process text files with URLs
 
 ## Requirements
 ### Python version
@@ -16,34 +17,35 @@ nndownload allows you to download videos from [Niconico](http://nicovideo.jp), f
 
 ## Usage
 ```
-Usage: nndownload.py [options] url
+usage: nndownload.py [options] input
 
-Options:
-  --version             show program's version number and exit
+positional arguments:
+  input                 URL or file
+
+optional arguments:
   -h, --help            show this help message and exit
-  -u USERNAME, --username=USERNAME
+  -u USERNAME, --username USERNAME
                         account username
-  -p PASSWORD, --password=PASSWORD
+  -p PASSWORD, --password PASSWORD
                         account password
-  -i FILE, --file=FILE  read URLs from file
   -n, --netrc           use .netrc authentication
   -q, --quiet           suppress output to console
   -l, --log             log output to file
+  -v, --version         show program's version number and exit
 
-  Download Options:
-    -y PROXY, --proxy=PROXY
+download options:
+  -y PROXY, --proxy PROXY
                         http or socks proxy
-    -o OUTPUT_PATH, --output-path=OUTPUT_PATH
+  -o OUTPUT_PATH, --output-path OUTPUT_PATH
                         custom output path (see template options)
-    -f, --force-high-quality
+  -f, --force-high-quality
                         only download if the high quality source is available
-    -m, --dump-metadata
-                        dump video metadata to file
-    -t, --download-thumbnail
+  -m, --dump-metadata   dump video metadata to file
+  -t, --download-thumbnail
                         download video thumbnail
-    -c, --download-comments
+  -c, --download-comments
                         download video comments
-    -e, --english       download english comments
+  -e, --english         download english comments
 ```
 
 Custom filepaths are constructed like standard Python template strings, e.g. `{uploader} - {title}.{ext}`. The available options are:
